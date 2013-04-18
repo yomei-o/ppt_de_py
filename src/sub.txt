@@ -1,0 +1,29 @@
+Sub CreateDirectory()
+End Sub
+
+Sub WriteCFile()
+        
+    Dim text As String
+    text = ActivePresentation.Slides(2).Shapes(1).TextFrame.TextRange.text
+    text = Replace(text, Chr(-32411), Chr(39), , , vbBinaryCompare)
+    text = Replace(text, Chr(-32410), Chr(39), , , vbBinaryCompare)
+    text = Replace(text, Chr(-32409), Chr(34), , , vbBinaryCompare)
+    text = Replace(text, Chr(-32408), Chr(34), , , vbBinaryCompare)
+    ActivePresentation.Slides(2).Shapes(1).TextFrame.TextRange.text = text
+    
+    Dim file As Integer
+    file = FreeFile
+    Open "testmain.py" For Output As #file
+    Print #file, text
+    Close #file
+        
+End Sub
+
+Sub DoCompile()
+    CreateDirectory
+    WriteCFile
+    WriteFile_docompile
+    WriteFile_tinypy
+    Shell ("docompile.bat")
+End Sub
+
